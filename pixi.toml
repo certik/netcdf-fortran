@@ -1,0 +1,14 @@
+[workspace]
+authors = ["Ondřej Čertík <ondrej@certik.us>"]
+channels = ["conda-forge"]
+name = "netcdf-fortran"
+platforms = ["osx-arm64"]
+version = "0.1.0"
+
+[tasks]
+
+[dependencies]
+libnetcdf = ">=4.10.1,<5"
+cmake = ">=4.4.0,<5"
+make = ">=4.4.1,<5"
+netcdf4 = ">=1.7.4,<2"
