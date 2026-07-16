@@ -1,5 +1,8 @@
 #!/bin/bash
 
 set -ex
-FFLAGS="--cpp" FC=lfortran cmake .
+
+mkdir build
+cd build
+FFLAGS="--cpp --separate-compilation" FC=lfortran cmake ..
 make
