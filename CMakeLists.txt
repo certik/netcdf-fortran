@@ -18,6 +18,17 @@ DESCRIPTION "NetCDF is a set of software libraries and machine-independent data 
 )
 SET(NC4F_CTEST_PROJECT_NAME "netcdf-fortran")
 
+# LFortran does not understand the Apple linker flags `-dynamiclib` and
+# `-install_name` directly; it accepts linker flags via `-W` instead. Rewrite
+# the shared-library link rule so the install name is passed as
+# `-Wl,-install_name,<name>` and `--shared` replaces `-dynamiclib`.
+IF(APPLE AND CMAKE_Fortran_COMPILER MATCHES "lfortran")
+  SET(CMAKE_SHARED_LIBRARY_SONAME_Fortran_FLAG "-Wl,-install_name,")
+  SET(CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS "--shared -Wl,-headerpad_max_install_names")
+  SET(CMAKE_Fortran_CREATE_SHARED_LIBRARY
+    "<CMAKE_Fortran_COMPILER> <LANGUAGE_COMPILE_FLAGS> <LINK_FLAGS> <CMAKE_SHARED_LIBRARY_CREATE_Fortran_FLAGS> -o <TARGET> <SONAME_FLAG><TARGET_INSTALLNAME_DIR><TARGET_SONAME> <OBJECTS> <LINK_LIBRARIES>")
+ENDIF()
+
 set(PACKAGE "${NC4F_CTEST_PROJECT_NAME}" CACHE STRING "")
 
 #Project Version
